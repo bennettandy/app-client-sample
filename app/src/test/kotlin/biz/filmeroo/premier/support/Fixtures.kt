@@ -13,6 +13,10 @@ object Fixtures {
         return listOf(film(123), film(456))
     }
 
+    fun filmListB(): List<ApiFilm> {
+        return listOf(film(765), film(432))
+    }
+
     fun filmResponse(): ApiFilmListResponse {
         return ApiFilmListResponse(filmList())
     }

@@ -74,7 +74,7 @@ internal class AppModule {
 
     @Provides
     @Singleton
-    fun providePicasso() = Picasso.get()
+    fun providePicasso():Picasso = Picasso.get()
 }
 
 @Module

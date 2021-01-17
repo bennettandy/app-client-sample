@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
 import biz.filmeroo.premier.R
 import biz.filmeroo.premier.api.ApiFilm
 import biz.filmeroo.premier.api.FilmService
@@ -20,11 +22,13 @@ class DetailActivity : AppCompatActivity(), FilmDetailPresenter.View {
 
     @Inject internal lateinit var presenter: FilmDetailPresenter
     @Inject internal lateinit var picasso: Picasso
+    @Inject internal lateinit var filmAdapter: SimilarFilmAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+        initialiseRecyclerView()
         presenter.start(this)
         presenter.loadMovie(this, intent.extras?.getLong(EXTRA_ID, -1) ?: -1)
     }
@@ -41,6 +45,17 @@ class DetailActivity : AppCompatActivity(), FilmDetailPresenter.View {
         } catch (e: ParseException) {
             e.printStackTrace()
         }
+    }
+
+    fun initialiseRecyclerView() {
+        recyclerview.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false)
+        recyclerview.itemAnimator = DefaultItemAnimator()
+        recyclerview.adapter = filmAdapter
+    }
+
+    override fun displaySimilar( similarMovies: List<ApiFilm>){
+        filmAdapter.submitList(similarMovies)
+        filmAdapter.notifyDataSetChanged()
     }
 
     override fun displayError() {

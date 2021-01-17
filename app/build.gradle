@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    ext.dagger_version = '2.27'
+    ext.dagger_version = '2.28'
     ext.retrofit_version = '2.4.0'
 
     // Core
