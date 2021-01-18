@@ -8,7 +8,6 @@ import biz.filmeroo.premier.main.FilmRepository
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -21,7 +20,6 @@ internal class FilmDetailPresenter @Inject constructor(private val filmRepositor
                         // fallback if we have no similar movies
                         .flatMap { films: List<ApiFilm> -> Observable.just(films)
                                 .filter { it.isNotEmpty() }
-
                                 // fetch top-rated as fallback if list is empty
                                 .switchIfEmpty(filmRepository.fetchTopRated().toObservable())
                                 .firstOrError()
@@ -40,7 +38,6 @@ internal class FilmDetailPresenter @Inject constructor(private val filmRepositor
                         { view.displayError() }
                 ))
     }
-
 
     private fun displayMovieResults(view: View, moviewResults: Pair<ApiFilm, List<ApiFilm>>) =
             view.apply {
