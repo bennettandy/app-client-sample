@@ -18,6 +18,7 @@ internal class FilmDetailPresenter @Inject constructor(private val filmRepositor
                 .zipWith(filmRepository.fetchSimilar(movieId)
 
                         // fallback if we have no similar movies
+                        // todo: switchIfEmpty only available on Observable which implies there is probably a better way to replace empty List
                         .flatMap { films: List<ApiFilm> -> Observable.just(films)
                                 .filter { it.isNotEmpty() }
                                 // fetch top-rated as fallback if list is empty
@@ -34,7 +35,7 @@ internal class FilmDetailPresenter @Inject constructor(private val filmRepositor
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { pair -> displayMovieResults(view, pair) },
+                        { filmAndSimilarPair -> displayMovieResults(view, filmAndSimilarPair) },
                         { view.displayError() }
                 ))
     }
